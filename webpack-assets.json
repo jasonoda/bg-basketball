@@ -1,0 +1,46 @@
+{
+  "index": {
+    "js": "index-bundle-49c9bc7f5ddb45fd3aa7.js"
+  },
+  "": {
+    "glb": [
+      "src/models/court2.glb",
+      "src/models/ball.glb"
+    ],
+    "png": [
+      "src/images/adPictures.png",
+      "src/images/ref/pos-x.png",
+      "src/images/ref/pos-z.png",
+      "src/images/ref/neg-z.png",
+      "src/images/ref/neg-x.png",
+      "src/images/ref/pos-y.png",
+      "src/images/vig.png",
+      "src/images/meterVert.png",
+      "src/images/meterHor.png",
+      "src/images/ref/neg-y.png",
+      "src/images/black.png"
+    ],
+    "otf": [
+      "src/fonts/Scoreboard.otf",
+      "src/fonts/ProximaNova.otf"
+    ],
+    "mp3": [
+      "src/sounds/buzzer.mp3",
+      "src/sounds/whistle.mp3",
+      "src/sounds/hoop.mp3",
+      "src/sounds/bounce1.mp3",
+      "src/sounds/backboard.mp3",
+      "src/sounds/swish.mp3",
+      "src/sounds/catch.mp3",
+      "src/sounds/click.mp3"
+    ],
+    "jpg": "src/images/testImage.jpg",
+    "html": "index.html",
+    "svg": [
+      "src/images/topMeter.svg",
+      "src/images/playAgain.svg",
+      "src/images/start.svg",
+      "src/images/boxxx.svg"
+    ]
+  }
+}

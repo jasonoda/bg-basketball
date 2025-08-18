@@ -1,0 +1,276 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    background-color: #07001e;
+    /* background: linear-gradient(to bottom, #661414 0%, #2f0401 50%, #2f0401 100%); */
+    height: 100vh; /* Ensures the body takes the full viewport height */
+    margin: 0; /* Removes any default margin */
+    /* background: linear-gradient(to bottom, #ff9999, #990000); */
+
+    user-select: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    overflow: hidden;
+}
+
+@font-face {
+    font-family: ProximaNova;
+    src: url("./fonts/ProximaNova.otf");
+}
+
+@font-face {
+    font-family: Scoreboard;
+    src: url("./fonts/Scoreboard.otf");
+}
+
+#feedback{
+    position: fixed;
+    display: none;
+    z-index:50000;
+    color:aliceblue;
+    background-color: rgb(0, 0, 0);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.2); /* Light border */
+    border-top-color: #3498db; /* Active color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite; /* Rotation animation */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#pushDown{
+    display: none;
+}
+
+#loadingImage{
+    /* position: fixed;
+    width: 237px;
+    height: 46px;
+
+    font-family: 'Gotham-Book';
+    color: #333333;
+    font-size: 20pt;
+    text-align: center;
+    
+    top:0;
+    bottom:0;
+    left: 0;
+    right: 0;
+    margin:auto;
+    z-index: 11000;
+
+    image-rendering: smooth ;
+    pointer-events: none; */
+
+    position: absolute;
+
+    top:0;
+    bottom:0;
+    left: 0;
+    right: 0;
+    margin:auto;
+
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Makes it a circle */
+   
+    background: linear-gradient(
+        rgba(0, 114, 255, 1),
+        rgba(0, 114, 255, 0),
+        rgba(0, 114, 255, 0),
+        rgba(0, 114, 255, 1)
+    );
+    -webkit-mask: radial-gradient(circle, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 66%);
+    mask: radial-gradient(circle, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 66%);
+    z-index: 11000;
+    transform: translate(-50%, -50%);
+    animation: spin 1s linear infinite;
+}
+
+#loadingBack{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index:10000;
+    background-color: #08041e;
+    pointer-events: none;
+    /* display: none; */
+}
+
+.gradient-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%; /* Makes it a circle */
+   
+    background: linear-gradient(
+        rgba(0, 114, 255, 1),
+        rgba(0, 114, 255, 0),
+        rgba(0, 114, 255, 0),
+        rgba(0, 114, 255, 1)
+    );
+    -webkit-mask: radial-gradient(circle, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 66%);
+    mask: radial-gradient(circle, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 66%);
+    z-index: 2000;
+    transform: translate(50%, 50%);
+    animation: spin 1s linear infinite;
+}
+
+#vig{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    z-index: 1200;
+    pointer-events: none;
+    display: none;
+    /* border: 2px solid red; */
+}
+
+/* ---------------------------------------------------------------- */
+
+#meterDiv{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 200px;
+    z-index: 1200;
+    /* display: none; */
+    opacity: 0;
+}
+
+#meterImg{
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    z-index: 1200;
+    top: -15px;
+}
+
+#meterVertDot{
+    position: absolute;
+    left: 50%;
+    top: 90px;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 13px;
+    z-index: 1250;
+    opacity: .8;
+    background: #3131b9;
+}
+
+#meterHorDot{
+    position: absolute;
+    left: 100px;
+    top: 90px;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 13px;
+    z-index: 1240;
+    opacity: .8;
+    /* border: 2px solid green; */
+    background: #b9315e;
+}
+
+/* ---------------------------------------------------------------- */
+
+#score{
+
+    font-family: "ProximaNova", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 36pt;
+    position: absolute;
+    right: 16px;
+    top: 10px;
+    color: white;
+    letter-spacing: 2px;
+    z-index: 1240;
+    opacity: 0;
+
+}
+
+#instructions{
+
+    font-family: "ProximaNova", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16pt;
+    position: absolute;
+    left: 50%;
+    top: 200px;
+    transform: translateX(-50%);
+    color: white;
+    letter-spacing: 2px;
+    z-index: 1240;
+    opacity: 0;
+    width: 300px;
+
+}
+
+/* ---------------------------------------------------------------- */
+
+.gameButton{
+
+    position: absolute;
+    width: 260px;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    
+    z-index: 1300;
+   
+}
+
+#results{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 70px;
+    z-index: 1280;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#scoreTop{
+    color: #ff7800;
+    font-size: 12pt;
+    font-family: ProximaNova;
+    letter-spacing: 6px;
+    z-index: 1280;
+    /* border: 1px solid red; */
+}
+
+#scoreTotal{
+    color: #ff7800;
+    font-size: 132pt;
+    font-family: Scoreboard;
+    z-index: 1280;
+    /* border: 1px solid red; */
+    transform: translateY(-30px);
+}
+
+/* ---------------------------------------------------------------- */
+
+#mixer{
+    top: 100px;
+    position: absolute;
+    z-index: 200;
+    display: none;
+}
