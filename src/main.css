@@ -66,14 +66,14 @@ body{
     border-radius: 50%; /* Makes it a circle */
    
     background: linear-gradient(
-        rgba(0, 114, 255, 1),
+        rgba(220, 20, 60, 1),
         rgba(0, 114, 255, 0),
         rgba(0, 114, 255, 0),
-        rgba(0, 114, 255, 1)
+        rgba(220, 20, 60, 1)
     );
     -webkit-mask: radial-gradient(circle, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 66%);
     mask: radial-gradient(circle, rgba(0,0,0,0) 65%, rgba(0,0,0,1) 66%);
-    z-index: 2000;
+    z-index: 12000;
     transform: translate(-50%, -50%);
     animation: spin 1s linear infinite;
     pointer-events: none;
@@ -433,6 +433,11 @@ body{
 }
 
 #instructionsButton {
+    color: #ffffff;
+    text-shadow: 1px 1px 0 #000000;
+}
+
+#playButton {
     color: #ffffff;
 }
 

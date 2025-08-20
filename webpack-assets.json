@@ -1,7 +1,6 @@
 {
   "index": {
-    "css": "index-bundle-f32b3da74f303a24556a.css",
-    "js": "index-bundle-f32b3da74f303a24556a.js"
+    "js": "index-bundle-d15b314d418932dc259d.js"
   },
   "": {
     "glb": [
@@ -42,13 +41,14 @@
       "src/sounds/click.mp3"
     ],
     "jpg": "src/images/testImage.jpg",
+    "html": "index.html",
     "svg": [
       "src/images/topMeter.svg",
       "src/images/playAgain.svg",
       "src/images/start.svg",
       "src/images/boxxx.svg"
     ],
-    "html": "index.html",
+    "js": "src_starScores_json-bundle-d15b314d418932dc259d.js",
     "ini": "src/sounds/desktop.ini"
   }
 }

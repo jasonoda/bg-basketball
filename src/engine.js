@@ -203,41 +203,22 @@ export default class Engine{
 
             // end
 
-            this.loadBack=1;
-            this.loadWords=1;
+            this.loadOpacity=2;
 
             this.count=0;
-            this.action="wait";
-
-        }else if(this.action==="wait"){
-
-            // fade out loading graphic
-
-            this.loadWords-=this.dt*2;
-            document.getElementById("loadingImage").style.opacity = this.loadWords+""
-
-            // loop
-
-            this.ui.update();
-            this.scene.update();
-
-            // end
-
-            // this.count+=this.dt;
-            if(this.loadWords<=0){
-                this.count=0;
-                this.action="go"
-            }
+            this.action="go";
 
         }else if(this.action==="go"){
 
             // fade out loading cover
 
-            this.loadBack-=this.dt*.75;
-            if(this.loadBack.opacity<0){
-                this.loadBack.opacity=0;
+            this.loadOpacity-=this.dt*1.5;
+            if(this.loadOpacity<0){
+                this.loadOpacity=0;
             }
-            document.getElementById("loadingBack").style.opacity = this.loadBack+""
+
+            document.getElementById("loadingImage").style.opacity = this.loadOpacity+""
+            document.getElementById("loadingBack").style.opacity = this.loadOpacity+""
 
             // loops
 
