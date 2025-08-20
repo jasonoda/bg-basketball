@@ -20,7 +20,7 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 		/>
-		<title>Title</title>
+		<title>Hoops</title>
 
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,6 +28,7 @@
 			href="https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap"
 			rel="stylesheet"
 		/>
+		<link rel="stylesheet" href="shared.css" />
 
 		<!--meta---------------------------------------------------------------------------------------------------------- -->
 
@@ -39,14 +40,47 @@
 			<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 		</div>
 
-		<div id="feedback">asdf</div>
+		<div id="startMenu">
+			<div id="startMenuContainer">
+				<img id="splashImage" src="src/images/splashImage.png" alt="Splash">
+				<div id="playButton">PLAY</div>
+				<div id="instructionsButton">INSTRUCTIONS</div>
+			</div>
+		</div>
+
+		<div id="instructionsOverlay">
+			<div id="instructionsContainer">
+				<div id="instructionsTitle">INSTRUCTIONS</div>
+				
+				<div id="instructionsText">
+					<div class="instructionLine">Tap when dots are in the<br />center for better accuarcy.</div>
+					<img src="src/images/topMeterIns.png" alt="Instructions" id="instructionsImage">
+					<div class="instructionDivider"></div>
+					<div class="instructionLine">Increase your score multiplier<br />by getting streaks.</div>
+					<div class="instructionDivider"></div>
+					<div class="instructionLine">Time limit: 2 minutes</div>
+				</div>
+				<div id="closeInstructionsButton">CLOSE</div>
+			</div>
+		</div>
 
 		<!-- loading -->
 
-		<!-- <div class="gradient-circle"></div> -->
-
 		<div id="loadingImage"></div>
 		<div id="loadingBack"></div>
+
+		<div id="feedback">asdf</div>
+
+		<div id="fader"></div>
+		<div id="faderBlack"></div>
+
+		<div id="topDiv"></div>
+		<div id="bonusDiv"></div>
+
+		<div id="scoreDiv" class="ui">0</div>
+		<div id="timerDiv" class="ui">2:00</div>
+
+		<div class="ui" id="bonusDisplay">BONUS: x1.0</div>
 
 		<img id="vig" src="src/images/vig.png" />
 
@@ -56,93 +90,5 @@
 			<div id="meterHorDot"></div>
 		</div>
 
-		<img class="gameButton" id="startButton" src="src/images/start.svg" />
-
-		<div id="results">
-			<div id="scoreTop">SCORE</div>
-			<div id="scoreTotal">12</div>
-		</div>
-
-		<div id="score">0/25</div>
-		<div id="instructions">
-			Click when dots are in the<br />center for better accuarcy.
-		</div>
-
-		<!-- mixer -->
-
-		<div id="mixer">
-			<input type="checkbox" id="mix" /><br />
-			<input type="text" id="c1_Color" /><br />
-			<input type="text" id="c2_Color" /><br />
-			<input type="text" id="c3_Color" /><br />
-			<input type="text" id="c4_Color" /><br />
-			<input type="text" id="c5_Color" /><br />
-
-			<input
-				type="range"
-				min="1"
-				max="360"
-				value="50"
-				class="slider"
-				id="c1_H"
-			/><br />
-			<input
-				type="range"
-				min="1"
-				max="100"
-				value="50"
-				class="slider"
-				id="c1_S"
-			/><br />
-			<input
-				type="range"
-				min="1"
-				max="100"
-				value="50"
-				class="slider"
-				id="c1_L"
-			/><br /><br />
-			<!--       
-      <input type="range" min="1" max="360" value="50" class="slider" id="c2_H"><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="c2_S"><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="c2_L"><br><br>
-      
-      <input type="range" min="1" max="360" value="50" class="slider" id="c3_H"><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="c3_S"><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="c3_L"><br><br>
-      
-      <input type="range" min="1" max="360" value="50" class="slider" id="c4_H"><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="c4_S"><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="c4_L"><br><br>
-      
-      <input type="range" min="1" max="360" value="50" class="slider" id="c5_H"><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="c5_S"><br>
-      <input type="range" min="1" max="100" value="50" class="slider" id="c5_L"><br><br>
-   -->
-			<input
-				type="range"
-				min="0"
-				max="100"
-				value="1"
-				class="slider"
-				id="num1"
-			/><br />
-			<input
-				type="range"
-				min="0"
-				max="100"
-				value="1"
-				class="slider"
-				id="num2"
-			/><br />
-			<input
-				type="range"
-				min="0"
-				max="100"
-				value="1"
-				class="slider"
-				id="num3"
-			/><br />
-		</div>
 	</body>
 </html>

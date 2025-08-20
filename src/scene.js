@@ -8,13 +8,14 @@ import cannonDebugger from "cannon-es-debugger";
 export class Scene {
 	setUp(e) {
 		this.e = e;
+		this.reverseOrder = false;
 	}
 
 	buildScene() {
 		this.mainCont = new THREE.Group();
 		this.e.scene3D.add(this.mainCont);
 
-		this.dl_shad = new THREE.DirectionalLight(0xffffff, 8);
+		this.dl_shad = new THREE.DirectionalLight(0xffffff, 1);
 		// this.dl_shad.position.x=5;
 		this.dl_shad.position.y = 5;
 		this.dl_shad.position.z = 11;
@@ -24,7 +25,7 @@ export class Scene {
 
 		//-----------------------------------------
 
-		this.pointLight = new THREE.PointLight(0xffffff, 18);
+		this.pointLight = new THREE.PointLight(0xffffff, 2);
 		this.pointLight.position.x = 0;
 		this.pointLight.position.y = 2;
 		this.pointLight.position.z = 2;
@@ -51,7 +52,7 @@ export class Scene {
 
 		// ambient light
 
-		this.ambLight = new THREE.AmbientLight(0xffffff, 3.25);
+		this.ambLight = new THREE.AmbientLight(0xffffff, 1);
 		this.mainCont.add(this.ambLight);
 
 		//---PLAYER------------------------------------------------------------------------------------------------------
@@ -96,12 +97,13 @@ export class Scene {
 		}
 
 		this.reflectiveFloor.material.transparent = true;
-		this.reflectiveFloor.material.opacity = 0.5;
+		this.reflectiveFloor.material.opacity = 0.2;
 		this.reflectiveFloor.material.blending = THREE.NormalBlending;
 		this.reflectiveFloor.material.depthWrite = false;
 
 		this.reflectiveFloor.rotation.x = this.e.u.ca(-90);
 		this.reflectiveFloor.position.y = 0.135;
+		this.reflectiveFloor.renderOrder = -1;
 
 		this.mainCont.add(this.reflectiveFloor);
 
@@ -239,6 +241,7 @@ export class Scene {
 			this.ball.ballBody = ballBody;
 
 			ballBody.name = "ball" + i;
+			ballBody.action = "waiting"; // Default action for each ball
 
 			this.hoopSoundDelay = 0;
 
@@ -484,53 +487,112 @@ export class Scene {
 
 		//---------------------------------------
 
-		this.startButton = document.getElementById("startButton");
+		// startButton removed - functionality moved to startMenu PLAY button
+		// this.startButton = document.getElementById("startButton");
 
-		this.startButton.addEventListener("touchstart", () => {
-			if (this.e.mobile === true) {
+		// this.startButton.addEventListener("touchstart", () => {
+		// 	if (this.e.mobile === true) {
+		// 		if (this.action === "start button wait") {
+		// 			this.e.s.p("click");
+		// 			gtag("event", "play_count", {
+		// 				device_type: "mobile",
+		// 			});
+
+		// 			this.action = "start move";
+		// 		}
+		// 	}
+		// });
+
+		// this.startButton.addEventListener("click", () => {
+		// 	if (this.e.mobile === false) {
+		// 		if (this.action === "start button wait") {
+		// 			this.e.s.p("click");
+		// 			gtag("event", "play_count", {
+		// 				device_type: "desktop",
+		// 			});
+
+		// 			this.action = "start move";
+		// 		}
+		// 	});
+
+		//---------------------------------------
+
+		// Add event listener for the PLAY button to hide startMenu and start game
+		this.playButton = document.getElementById("playButton");
+		this.startMenu = document.getElementById("startMenu");
+		
+		if (this.playButton && this.startMenu) {
+			this.playButton.addEventListener("click", () => {
+				if (this.action === "start button wait") {
+					this.e.s.p("click");
+					gtag("event", "play_count", {
+						device_type: this.e.mobile ? "mobile" : "desktop",
+					});
+					
+					this.startMenu.style.display = "none";
+					this.instructionsOverlay.style.display = "none"; // Hide instructions overlay when game starts
+					this.action = "start move";
+				}
+			});
+			
+			// Also add touch event for mobile
+			this.playButton.addEventListener("touchstart", (e) => {
+				e.preventDefault();
 				if (this.action === "start button wait") {
 					this.e.s.p("click");
 					gtag("event", "play_count", {
 						device_type: "mobile",
 					});
-
+					
+					this.startMenu.style.display = "none";
+					this.instructionsOverlay.style.display = "none"; // Hide instructions overlay when game starts
 					this.action = "start move";
 				}
-			}
-		});
+			});
+		}
 
-		this.startButton.addEventListener("click", () => {
-			if (this.e.mobile === false) {
-				if (this.action === "start button wait") {
-					this.e.s.p("click");
-					gtag("event", "play_count", {
-						device_type: "desktop",
-					});
-
-					this.action = "start move";
-				}
-			}
-		});
+		// Add event listeners for instructions button and close button
+		this.instructionsButton = document.getElementById("instructionsButton");
+		this.instructionsOverlay = document.getElementById("instructionsOverlay");
+		this.closeInstructionsButton = document.getElementById("closeInstructionsButton");
+		
+		if (this.instructionsButton && this.instructionsOverlay) {
+			this.instructionsButton.addEventListener("click", () => {
+				this.e.s.p("click");
+				this.instructionsOverlay.style.display = "flex";
+			});
+			
+			// Also add touch event for mobile
+			this.instructionsButton.addEventListener("touchstart", (e) => {
+				e.preventDefault();
+				this.e.s.p("click");
+				this.instructionsOverlay.style.display = "flex";
+			});
+		}
+		
+		if (this.closeInstructionsButton && this.instructionsOverlay) {
+			this.closeInstructionsButton.addEventListener("click", () => {
+				this.e.s.p("click");
+				this.instructionsOverlay.style.display = "none";
+			});
+			
+			// Also add touch event for mobile
+			this.closeInstructionsButton.addEventListener("touchstart", (e) => {
+				e.preventDefault();
+				this.e.s.p("click");
+				this.instructionsOverlay.style.display = "none";
+			});
+		}
 
 		//---------------------------------------
 
-		this.scoreDiv = document.getElementById("score");
-		this.results = document.getElementById("results");
+		this.scoreDiv = document.getElementById("scoreDiv");
+		this.timerDiv = document.getElementById("timerDiv");
+		this.bonusDisplay = document.getElementById("bonusDisplay");
+		this.fader = document.getElementById("fader");
+		this.faderBlack = document.getElementById("faderBlack");
 
-		gsap.to(document.getElementById("scoreTotal"), {
-			color: "white",
-			duration: 0.8,
-			yoyo: true,
-			repeat: -1,
-			ease: "sine.inOut",
-		});
-		gsap.to(document.getElementById("scoreTop"), {
-			color: "white",
-			duration: 0.8,
-			yoyo: true,
-			repeat: -1,
-			ease: "sine.inOut",
-		});
+
 
 		//---------------------------------------
 	}
@@ -550,6 +612,26 @@ export class Scene {
 		this.round = 0;
 		this.basketsMade = 0;
 		this.basketsShot = 0;
+		this.bonusMult = 1.0;
+		this.totalScore = 0;
+		this.currentStreak = 0;
+		this.bestStreak = 0;
+		this.lastTickSecond = 0;
+		
+		console.log(`Game reset - Bonus: ${this.bonusMult}, Score: ${this.totalScore}`);
+		
+		// Initialize game timer to 120 seconds (2:00)
+		this.gameTimer = 120;
+		
+		// Initialize dot speed system
+		this.initialDotSpeed = 0.020; // Starting speed
+		this.finalDotSpeed = 0.013;   // Final speed
+		this.dotSpeed = this.initialDotSpeed; // Current speed
+		this.lastSpeedUpdate = 0;    // Track when we last updated speed
+		this.speedUpdateInterval = 15; // Update speed every 15 seconds
+		
+		// Initialize bonus multiplier decay system
+		this.bonusDecayRate = 0.01; // How much to decrease per second (very small)
 	}
 
 	update() {
@@ -558,7 +640,26 @@ export class Scene {
 		// this.cannonDebug.update();
 		this.world.step(1 / 60, this.e.dt, 10);
 
-		this.scoreDiv.innerHTML = this.basketsMade + "/" + this.basketsShot;
+		// this.scoreDiv.innerHTML = this.basketsMade + "/" + this.basketsShot;
+		
+		// Update timer display
+		if (this.timerDiv && this.gameTimer !== undefined) {
+			const minutes = Math.floor(this.gameTimer / 60);
+			const seconds = Math.floor(this.gameTimer % 60);
+			this.timerDiv.innerHTML = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+		}
+		
+		// Update score display
+		if (this.scoreDiv) {
+			this.scoreDiv.innerHTML = this.totalScore || 0;
+		}
+		
+		// Update bonus display
+		if (this.bonusDisplay) {
+			// Round to nearest tenth for display
+			const roundedBonus = Math.round((this.bonusMult || 1.0) * 10) / 10;
+			this.bonusDisplay.innerHTML = `BONUS: x${roundedBonus.toFixed(1)}`;
+		}
 
 		this.swishTime -= this.e.dt;
 
@@ -569,16 +670,34 @@ export class Scene {
 			this.ballPos = this.balls[i].position;
 			this.triggerPos = this.hoopTriggerBody.position;
 
+			// Check if ball is in scoring position and hasn't been processed yet
 			if (
-				Math.abs(this.ballPos.x - this.triggerPos.x) < 0.3 &&
+				Math.abs(this.ballPos.x - this.triggerPos.x) < 0.4 &&
 				Math.abs(this.ballPos.y - this.triggerPos.y) < 0.05 &&
-				Math.abs(this.ballPos.z - this.triggerPos.z) < 0.3 &&
-				this.balls[i].velocity.y < 0
+				Math.abs(this.ballPos.z - this.triggerPos.z) < 0.4 &&
+				this.balls[i].velocity.y < 0 &&
+				this.balls[i].action === "shooting"
 			) {
+				// Ball scored!
+				this.balls[i].action = "scored";
 				if (this.swishTime <= 0) {
 					this.swishTime = 0.4;
 					this.swish();
 				}
+			} else if (
+				// Check if ball went through hoop area but missed
+				
+				this.ballPos.y < this.triggerPos.y - 0.1 &&
+				
+				this.balls[i].velocity.y < -2 &&
+				this.balls[i].action === "shooting"
+			) {
+				// Ball missed - mark as missed and reset multiplier and streak
+				this.balls[i].action = "missed";
+				this.bonusMult = 1.0;
+				this.currentStreak = 0;
+				this.e.s.p("buzzerShort");
+				console.log(`Ball missed! Resetting bonus to ${this.bonusMult} and streak to 0`);
 			}
 
 			this.velocity = this.balls[i].velocity;
@@ -598,6 +717,55 @@ export class Scene {
 				0.05
 			);
 		}
+
+		if(this.gameHasStarted === true){
+			this.gameTimer -= this.e.dt;
+			
+			// Update dot speed progressively every 15 seconds
+			const timeElapsed = 120 - this.gameTimer; // Time since game started
+			const speedUpdateTime = Math.floor(timeElapsed / this.speedUpdateInterval) * this.speedUpdateInterval;
+			
+			if (speedUpdateTime > this.lastSpeedUpdate) {
+				this.lastSpeedUpdate = speedUpdateTime;
+				
+				// Calculate how many speed updates have occurred
+				const speedUpdates = Math.floor(timeElapsed / this.speedUpdateInterval);
+				const totalSpeedUpdates = Math.floor(120 / this.speedUpdateInterval); // 8 total updates (120/15)
+				
+				// Calculate new speed (linear interpolation from initial to final)
+				const speedProgress = speedUpdates / totalSpeedUpdates;
+				this.dotSpeed = this.initialDotSpeed - (speedProgress * (this.initialDotSpeed - this.finalDotSpeed));
+				
+							// Ensure speed doesn't go below final speed
+			this.dotSpeed = Math.max(this.dotSpeed, this.finalDotSpeed);
+			
+			console.log(`Dot speed updated: ${this.dotSpeed.toFixed(3)} at ${timeElapsed.toFixed(1)}s (update #${speedUpdates})`);
+		}
+		
+		// Gradually decrease bonus multiplier over time (continuous)
+		this.bonusMult = Math.max(1.0, this.bonusMult - (this.bonusDecayRate * this.e.dt));
+		// console.log(this.bonusMult);
+		
+		// Round to nearest tenth for display purposes
+		// this.bonusMult = Math.round(this.bonusMult * 10) / 10;
+		
+		// Play tick sound every second when less than 10 seconds remain
+			if (this.gameTimer <= 10 && this.gameTimer > 0) {
+				const currentSecond = Math.ceil(this.gameTimer);
+				if (this.lastTickSecond !== currentSecond) {
+					this.e.s.p("tick");
+					this.lastTickSecond = currentSecond;
+				}
+			}
+			
+			if(this.gameTimer <= 0 && this.gameHasStarted===true){
+				this.gameTimer = 0;
+				this.gameHasStarted=false;
+				this.action = "end";
+			}
+		}
+
+		//subtract game timer here if game has been started
 
 		if (this.action === "start") {
 			this.e.camera.position.z = 20;
@@ -631,9 +799,10 @@ export class Scene {
 
 			this.e.s.p("whistle");
 
-			gsap.to(this.startButton, { opacity: 0, duration: 0.5, ease: "linear" });
-			this.startButton.style.pointerEvents = "none";
-			gsap.to(this.results, { opacity: 0, duration: 0.5, ease: "linear" });
+					// startButton removed - functionality moved to startMenu PLAY button
+		// gsap.to(this.startButton, { opacity: 0, duration: 0.5, ease: "linear" });
+		// this.startButton.style.pointerEvents = "none";
+
 
 			this.action = "start wait";
 		} else if (this.action === "start wait") {
@@ -647,17 +816,15 @@ export class Scene {
 					duration: 0.5,
 					ease: "linear",
 				});
-				gsap.to(document.getElementById("score"), {
-					opacity: 1,
-					duration: 0.5,
-					ease: "linear",
-				});
 
-				gsap.to(document.getElementById("instructions"), {
-					opacity: 1,
-					duration: 0.5,
-					ease: "linear",
-				});
+
+				this.gameHasStarted = true;
+
+				// gsap.to(document.getElementById("instructions"), {
+				// 	opacity: 1,
+				// 	duration: 0.5,
+				// 	ease: "linear",
+				// });
 
 				this.action = "set ball";
 				this.count = 0;
@@ -670,9 +837,17 @@ export class Scene {
 
 				this.curBall = 0;
 
-				this.round += 1;
+				if(this.reverseOrder === false){
+					this.round += 1;
+				} else {
+					this.round -= 1;
+				}
 
-				if (this.round === 1) {
+				// Handle the round transitions
+				if (this.round === 0) {
+					this.targetLerp = this.e.u.ca(0);
+					this.reverseOrder = false;
+				} else if (this.round === 1) {
 					this.targetLerp = this.e.u.ca(45);
 				} else if (this.round === 2) {
 					this.targetLerp = this.e.u.ca(0);
@@ -680,6 +855,14 @@ export class Scene {
 					this.targetLerp = this.e.u.ca(-45);
 				} else if (this.round === 4) {
 					this.targetLerp = this.e.u.ca(-89.9);
+					this.reverseOrder = true;
+				}
+				
+				// Fix: Ensure we don't skip round 0 when coming back from round 4
+				if (this.round < 0) {
+					this.round = 0;
+					this.targetLerp = this.e.u.ca(0);
+					this.reverseOrder = false;
 				}
 			} else {
 				this.waitTime = 0;
@@ -706,6 +889,9 @@ export class Scene {
 				);
 
 				this.ball.rotation.y = this.e.camContY.rotation.y - this.e.u.ca(-90);
+
+				// Reset ball action for new ball
+				this.ballBody.action = "waiting";
 
 				this.action = "wait time";
 			}
@@ -775,6 +961,7 @@ export class Scene {
 			// this.vertNum=0;
 
 			this.ballBody.type = CANNON.Body.DYNAMIC;
+			this.ballBody.action = "shooting"; // Mark ball as shooting
 
 			const ballPos = this.ballBody.position;
 			const hoopPos = new CANNON.Vec3(0, 3, 0);
@@ -828,8 +1015,20 @@ export class Scene {
 				this.action = "set ball";
 			}
 		} else if (this.action === "end") {
-			this.count += this.e.dt;
-			if (this.count > 4) {
+
+			this.gameHasStarted = false;
+
+			// Check if any balls are still in "shooting" state
+			let anyBallsStillShooting = false;
+			for (var i = 0; i < this.balls.length; i++) {
+				if (this.balls[i].action === "shooting") {
+					anyBallsStillShooting = true;
+					break;
+				}
+			}
+
+			// If no balls are shooting, proceed to end show
+			if (!anyBallsStillShooting) {
 				this.count = 0;
 				this.action = "end show";
 			}
@@ -837,17 +1036,14 @@ export class Scene {
 			this.useLerp = false;
 
 			this.e.s.p("buzzer");
+			this.e.s.p("achievement1");
 
 			gsap.to(document.getElementById("meterDiv"), {
 				opacity: 0,
 				duration: 0.5,
 				ease: "linear",
 			});
-			gsap.to(document.getElementById("score"), {
-				opacity: 0,
-				duration: 0.5,
-				ease: "linear",
-			});
+
 
 			gsap.to(this.e.camera.position, {
 				z: 20,
@@ -860,12 +1056,13 @@ export class Scene {
 				ease: "sine.inOut",
 			});
 
-			document.getElementById("scoreTotal").innerHTML = this.basketsMade;
-
-			gsap.to(this.results, { opacity: 1, duration: 0.5, ease: "linear" });
-			gsap.to(this.startButton, { opacity: 1, duration: 0.5, ease: "linear" });
-			this.startButton.src = "./src/images/playAgain.svg";
-			this.startButton.style.pointerEvents = "auto";
+					// Create final score overlay using endScore module
+					const statsArray = [
+						["SHOTS MADE", this.basketsMade],
+						["SHOTS MISSED", this.basketsShot - this.basketsMade],
+						["BEST STREAK", this.bestStreak || 0]
+					];
+					this.e.endScore.createFinalScoreOverlay(this.totalScore, statsArray);
 
 			this.count = 0;
 			this.action = "end wait 1";
@@ -889,8 +1086,51 @@ export class Scene {
 
 		this.mixer();
 
-		this.dotSpeed = 0.016;
+		// Dot speed is now managed dynamically in the update function
 	}
+	
+	createScorePopup(points) {
+		// Create score popup element
+		const popup = document.createElement('div');
+		popup.className = 'scorePopup';
+		popup.innerHTML = `+${points}`;
+		popup.style.cssText = `
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			color: #00ff00;
+			font-size: 24px;
+			font-weight: bold;
+			font-family: 'Montserrat', sans-serif;
+			z-index: 10000;
+			pointer-events: none;
+			text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+		`;
+		
+		document.body.appendChild(popup);
+		
+		// Animate the popup
+		gsap.fromTo(popup, 
+			{ 
+				opacity: 1, 
+				y: 0,
+				scale: 1.2
+			},
+			{
+				opacity: 0,
+				y: -100,
+				scale: 1,
+				duration: 1.5,
+				ease: "power2.out",
+				onComplete: () => {
+					document.body.removeChild(popup);
+				}
+			}
+		);
+	}
+
+
 
 	moveVertDot() {
 		if (this.vertVars === undefined) {
@@ -951,12 +1191,35 @@ export class Scene {
 	}
 
 	swish() {
-		console.log("net");
-		console.log(this.net);
+		// console.log("net");
+		// console.log(this.net);
 
 		this.e.s.p("swish");
+		this.e.s.p("coin"); // Play coin sound when basket is scored
 
 		this.basketsMade += 1;
+		
+		// Calculate score with bonus multiplier
+		const basePoints = 500;
+		const pointsEarned = Math.round(basePoints * this.bonusMult);
+		this.totalScore += pointsEarned;
+		
+		// console.log(`Scored! Base: ${basePoints}, Multiplier: ${this.bonusMult}, Points: ${pointsEarned}, Total: ${this.totalScore}`);
+		
+		// Increase bonus multiplier (max 5.0)
+		this.bonusMult = Math.min(5.0, this.bonusMult + 0.5);
+		
+		// Round to nearest tenth after increasing
+		this.bonusMult = Math.round(this.bonusMult * 10) / 10;
+		
+		// Update streak tracking
+		this.currentStreak += 1;
+		if (this.currentStreak > this.bestStreak) {
+			this.bestStreak = this.currentStreak;
+		}
+		
+		// Create animated score popup
+		this.createScorePopup(pointsEarned);
 
 		// Create GSAP Timeline for the net animation
 		const netTimeline = gsap.timeline({ defaults: { ease: "power2.out" } });
@@ -970,20 +1233,11 @@ export class Scene {
 			y: 1.05,
 			duration: 0.3,
 		});
-
-		// netTimeline.to(this.net.scale, {
-		//     y: .9,
-		//     duration: 0.1
-		// });
-
-		// netTimeline.to(this.net.scale, {
-		//     y: 1,
-		//     duration: 0.05
-		// });
 	}
 
 	mixer() {
-		if (document.getElementById("mix").checked === true) {
+		const mixElement = document.getElementById("mix");
+		if (mixElement && mixElement.checked === true) {
 			//-------------------------------------
 
 			var c1_H = document.getElementById("c1_H").value;

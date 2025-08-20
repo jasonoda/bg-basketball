@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export default class Engine{
-    constructor(input, loader, scene, sounds, utilities, ui){
+    constructor(input, loader, scene, sounds, utilities, ui, endScore){
 
         this.input = input;
         this.loader = loader;
@@ -9,6 +9,7 @@ export default class Engine{
         this.scene = scene;
         this.ui = ui;
         this.u = utilities;
+        this.endScore = endScore;
 
         this.mobile = false;
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent ) || window.innerWidth<600) {

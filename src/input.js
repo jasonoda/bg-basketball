@@ -56,10 +56,12 @@ export class Input {
               this.keyDown = false;
   
           } else if ( event.key === "q" || event.key === "Q") {
+
+            this.e.scene.gameTimer=3;
   
             // document.getElementById("mixer").style.display = "block"
 
-            this.e.scene.swish();
+            // this.e.scene.swish();
 
         }
   
